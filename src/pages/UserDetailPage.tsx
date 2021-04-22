@@ -20,7 +20,7 @@ const UserDetailPage: React.FC<UserDetailPageProps> = ({match, history}) => {
             	daal: 1, 
                 subzi: 1, 
                 rice: 1, 
-                roti: 6
+                roti: 4
              }, 
             addOns: ['Rice'],
             customized: [],
@@ -56,12 +56,19 @@ const UserDetailPage: React.FC<UserDetailPageProps> = ({match, history}) => {
             }} icon={close} />
           </IonChip>
       )))}
-       {Object.entries(packages.package1.items).filter(item =>  item[1] > 0 )
+       {Object.entries(packages.package1.items).filter(item =>  {
+         return item[1] > 0;
+       } )
        .map(((item) => (
           <IonChip color="secondary">
             <IonLabel>{item[1]} {item[0].toUpperCase()}</IonLabel>
             <IonIcon color="danger" onClick={() => {
-             //delete packages.package1.items.item[0];
+             if(item[0] == "rice"){
+               packages.package1.items['roti'] = 6; 
+             }
+             if(item[0] == "roti" && item[1] == 5){
+               packages.package1.items['rice'] = 1; 
+             }
              packages.package1.items[item[0]] = packages.package1.items[item[0]] - 1;
              setPackages(() => Object.assign({}, packages));
              console.log(packages);
