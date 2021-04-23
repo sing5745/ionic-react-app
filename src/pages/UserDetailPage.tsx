@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons, IonChip, IonIcon, IonLabel } from '@ionic/react'
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons, IonChip, IonIcon, IonLabel, IonItem, IonTextarea } from '@ionic/react'
 import { RouteComponentProps } from 'react-router';
 import { pin, heart, closeCircle, close } from 'ionicons/icons';
 
@@ -10,7 +10,7 @@ interface UserDetailPageProps extends RouteComponentProps<{
 const UserDetailPage: React.FC<UserDetailPageProps> = ({match, history}) => {
   const [packageType, setPackageType] = useState<string>();
   const [result, setResult] = useState([]);
-  const [packages, setPackages] = useState({})
+  const [text, setText] = useState<string>();
   const array = ['Daal', 'Roti', 'Rice'];
 
   const packages = {
@@ -27,12 +27,10 @@ const UserDetailPage: React.FC<UserDetailPageProps> = ({match, history}) => {
             note: ''
 }};
 
-//setTestPacks(packages);
-
   const [packages, setPackages] = useState(() => packages)
   const [names, setNames] = useState(() => array.map(item => item));
   const foodItems = ['Daal'];
-  console.log({packages})
+  
   return (
     <IonPage>
       <IonHeader>
@@ -45,7 +43,7 @@ const UserDetailPage: React.FC<UserDetailPageProps> = ({match, history}) => {
       </IonHeader>
       <IonContent>
         <br />
-        User {match.params.id} {JSON.stringify(packages)} {names}
+        User {match.params.id} {names}
         {names.map(((item) => (
           <IonChip color="secondary">
             <IonLabel>{item}</IonLabel>
@@ -83,6 +81,16 @@ const UserDetailPage: React.FC<UserDetailPageProps> = ({match, history}) => {
             console.log({result});
           }} icon={close} />
         </IonChip>
+        <IonItem>
+            <IonLabel position="floating">Note</IonLabel>
+            <IonTextarea value={packages.package1.note} onIonChange={e => {
+              console.log(e.detail.value);
+              packages.package1.note = e.detail.value;
+              setPackages(() => Object.assign({}, packages));
+              setText(e.detail.value!)
+              console.log(packages);
+            }}></IonTextarea>
+        </IonItem> 
         
       </IonContent>
     </IonPage>
