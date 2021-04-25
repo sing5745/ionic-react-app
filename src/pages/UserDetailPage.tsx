@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons, IonChip, IonIcon, IonLabel, IonItem, IonTextarea } from '@ionic/react'
 import { RouteComponentProps } from 'react-router';
 import { pin, heart, closeCircle, close } from 'ionicons/icons';
+import firebase from 'firebase/app';
+require('firebase/database');
 
 interface UserDetailPageProps extends RouteComponentProps<{
   id: string;
@@ -11,7 +13,46 @@ const UserDetailPage: React.FC<UserDetailPageProps> = ({match, history}) => {
   const [packageType, setPackageType] = useState<string>();
   const [result, setResult] = useState([]);
   const [text, setText] = useState<string>();
-  const array = ['Daal', 'Roti', 'Rice'];
+  const array = ['Daal', 'Roti', ' rr'];
+
+  var firebaseConfig = {
+    apiKey: "AIzaSyAzYzPMGzjTGskKnXXts45BgTbIzq9Lq3s",
+    authDomain: "ionic-test-app-89c72.firebaseapp.com",
+    databaseURL: "https://ionic-test-app-89c72-default-rtdb.firebaseio.com",
+    projectId: "ionic-test-app-89c72",
+    storageBucket: "ionic-test-app-89c72.appspot.com",
+    messagingSenderId: "801532170994",
+    appId: "1:801532170994:web:00b56f0b0c50a689cdf66b",
+    measurementId: "G-6PHSSGZ4P9"
+  };
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+ }
+
+  const dbref = firebase.database().ref('testDB/');
+  const createForm = () => {
+    dbref.on('value', resp => {
+      console.log(resp);
+      const returnArr: any[] = []
+      resp.forEach((childSnapshot: any) => {
+        const item = childSnapshot.val()
+        item.key = childSnapshot.key
+        returnArr.push(item)
+      });
+    });
+  }
+
+  const addPackage = () => {
+    console.log('ADDING PACKAGE');
+    const pkg = {packages};
+    console.log(pkg.packages.package1);
+
+    console.log(dbref.push(pkg.packages));
+  }
+  
+  //firebase.initializeApp(firebaseConfig);
+ 
 
   const packages = {
 			package1 : {
@@ -77,8 +118,9 @@ const UserDetailPage: React.FC<UserDetailPageProps> = ({match, history}) => {
           <IonLabel>1</IonLabel>
           <IonIcon color="danger" onClick={() => {
             //{result}.push('1');
+            
             setResult(result => [...result], ['ddal']);
-            console.log({result});
+            addPackage();
           }} icon={close} />
         </IonChip>
         <IonItem>
