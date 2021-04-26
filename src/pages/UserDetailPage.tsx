@@ -7,13 +7,14 @@ require('firebase/database');
 
 interface UserDetailPageProps extends RouteComponentProps<{
   id: string;
+  providerId: string;
 }> {}
 
 const UserDetailPage: React.FC<UserDetailPageProps> = ({match, history}) => {
   const [packageType, setPackageType] = useState<string>();
   const [result, setResult] = useState([]);
   const [text, setText] = useState<string>();
-  const array = ['Daal', 'Roti', ' rr'];
+  const array = ['Daal', 'Roti', ''];
 
   var firebaseConfig = {
     apiKey: "AIzaSyAzYzPMGzjTGskKnXXts45BgTbIzq9Lq3s",
@@ -31,6 +32,7 @@ const UserDetailPage: React.FC<UserDetailPageProps> = ({match, history}) => {
  }
 
   const dbref = firebase.database().ref('testDB/');
+
   const createForm = () => {
     dbref.on('value', resp => {
       console.log(resp);
@@ -44,7 +46,7 @@ const UserDetailPage: React.FC<UserDetailPageProps> = ({match, history}) => {
   }
 
   const addPackage = () => {
-    console.log('ADDING PACKAGE');
+    console.log('ADDING PACKAG');
     const pkg = {packages};
     console.log(pkg.packages.package1);
 
@@ -85,6 +87,8 @@ const UserDetailPage: React.FC<UserDetailPageProps> = ({match, history}) => {
       <IonContent>
         <br />
         User {match.params.id} {names}
+        <br />
+        Provider {match.params.providerId}
         {names.map(((item) => (
           <IonChip color="secondary">
             <IonLabel>{item}</IonLabel>
