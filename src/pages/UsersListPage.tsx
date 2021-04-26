@@ -21,6 +21,16 @@ const UsersListPage: React.FC<RouteComponentProps> = ({history}) => {
             </Link>
           </IonItem>
           <IonItem>
+            <Link to="/dashboard/users/2">
+              <IonLabel>User 2</IonLabel>
+            </Link>
+          </IonItem>
+           <IonItem>
+            <Link to="/dashboard/providers">
+              <IonLabel>Providers</IonLabel>
+            </Link>
+          </IonItem>
+          <IonItem>
             <IonButton onClick={e => {
               e.preventDefault();
               history.push('/dashboard/users/3')
